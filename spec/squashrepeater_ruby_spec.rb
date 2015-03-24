@@ -1,7 +1,10 @@
 require "spec_helper"
 
 describe SquashRepeater::Ruby do
-  it "Does nothing" do
-    pending
+  pending "Does nothing" do
+    fail
   end
+
+  # Test for whether Squash::Ruby.http_transmit changes behaviour
+
 end
