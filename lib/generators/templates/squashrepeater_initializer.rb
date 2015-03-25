@@ -1,4 +1,4 @@
-require "squash_repeater/ruby"
+require "squashrepeater/ruby"
 
 SquashRepeater::Ruby.configure do |c|
   # The nature of SquashRepeater is that a tiny local queueing system
@@ -14,5 +14,5 @@ SquashRepeater::Ruby.configure do |c|
   # Squash::Ruby api_key:
   c.squash_key = "12345"
   #Squash::Ruby environment:
-  c.environment = Rails.env
+  c.environment = Rails.env if defined? Rails.env
 end
