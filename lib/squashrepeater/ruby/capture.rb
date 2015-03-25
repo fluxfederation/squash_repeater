@@ -1,21 +1,5 @@
 require "backburner"
 
-# The nature of SquashRepeater is that a tiny local queueing system captures
-# the Squash notification, and retransmits it from a worker.  Therefore, we
-# assume beanstalkd is running locally:
-Backburner.configure do |config|
-  config.beanstalk_url    = ["beanstalk://127.0.0.1"]
-  config.tube_namespace   = "squash-repeater"
-
-  # NB: This relies on forking behaviour!
-  config.default_worker = Backburner::Workers::Forking
-
-  #TODO: Choose a better failure mode. Notify Munin?
-  #config.on_error = lambda { |ex| Airbrake.notify(ex) }
-  #TODO: Log to syslog, like our other tools?
-  #config.logger = Logger.new(STDOUT)
-end
-
 module SquashRepeater
   module Ruby
     def self.work
