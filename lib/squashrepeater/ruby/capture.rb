@@ -10,6 +10,7 @@ module SquashRepeater
       Backburner.enqueue(Capture, *args)
     end
 
+    #TODO: Choose a better name
     class Capture
       include Backburner::Queue
       queue "exception"
@@ -17,6 +18,10 @@ module SquashRepeater
       # Process one captured Squash notification;  i.e. forward it to the Squash
       # server
       def self.perform(url, headers, body, squash_configuration, no_proxy_env=nil)
+        #TODO: Change how Squash client deals with failures.
+        #    Normally it logs to a special log file, whereas what we really want
+        #    is for the job(s) to go back on the queue to be retried.
+
         #NB: :timeout_protection is a Proc object:
         squash_configuration = squash_configuration.dup
 
