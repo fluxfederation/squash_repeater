@@ -5,14 +5,21 @@ SquashRepeater::Ruby.configure do |c|
   # captures the Squash notification, and retransmits it from a worker.
   # Therefore, we assume beanstalkd is running locally:
 
+  ###
+  # Backburner defaults:
   # c.queue_host = "localhost"
   # c.namespace = "squash-repeater"
 
-  # You can set Squash::Ruby config here, or through their configration method:
-  # Squash::Ruby api_host:
-  c.squash_url = "http://no.where"
-  # Squash::Ruby api_key:
-  c.squash_key = "12345"
-  #Squash::Ruby environment:
+  ###
+  # You can set Squash::Ruby config here, or through their configration method. Either way, they must be set:
+  # @param api_host:
+  # c.squash_url = "http://no.where"
+  # @param api_key:
+  # c.squash_key = "12345"
+  # @param environment:
   c.environment = Rails.env if defined? Rails.env
+
+  ###
+  # This sets the Backburner (queue) logging.  There's no way to set Squash to use Logger:
+  c.logger = Rails.logger
 end

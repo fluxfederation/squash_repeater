@@ -31,8 +31,7 @@ module SquashRepeater
 
           #TODO: Choose a better failure mode. Notify Munin?
           #c.on_error = lambda { |ex| Airbrake.notify(ex) }
-          #TODO: Log to syslog, like our other tools?
-          #c.logger = Logger.new(STDOUT)
+          c.logger = Logger.new(STDOUT)
         end
       end
 
@@ -71,6 +70,15 @@ module SquashRepeater
 
       def namespace=(value)
         backburner.configuration.tube_namespace = value
+      end
+
+      def logger
+        backburner.configuration.logger
+      end
+
+      def logger=(value)
+        # Squash doesn't allow you to use a different logger
+        backburner.configuration.logger = value
       end
 
       private
