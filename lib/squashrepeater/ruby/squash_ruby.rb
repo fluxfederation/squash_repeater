@@ -5,6 +5,8 @@ require "squash/ruby"
 module Squash
   module Ruby
     class <<self
+      private
+
       alias :http_transmit__original :http_transmit
 
       # Capture the HTTP data, and store it in the beanstalkd queue for later
