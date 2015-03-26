@@ -46,9 +46,11 @@ Install `beanstalkd`
 - Configure it to auto-start on system boot
 - Give it a persistent store for queue data (needed in-order to not lose data)
 
-Optional:  Install this Gem elsewhere
-Optional:  
+#TODO: explain the right way to install a worker
+#      - Install copy of just the Gem + config elsewhere
+#      - Use the app's copy to run workers
 
+#TODO: How to run backburner as a daemon
 Set-up `backburner` to run in a daemon mode:
 
 - Ruby "God" process supervisor (script provided by upstream)
