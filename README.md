@@ -40,29 +40,83 @@ Or install it yourself as:
 
     $ gem install squashrepeater-ruby
 
-Install `beanstalkd`
+If you're using Rails, you can install an initialiser template with:
+
+ #TODO(willjr): Is this correct?
+
+    $ bundle exec rails generate intitializer squashrepeater
+
+## Install `beanstalkd`
 
 - Configure it to listen on `localhost` network
 - Configure it to auto-start on system boot
 - Give it a persistent store for queue data (needed in-order to not lose data)
 
-#TODO: explain the right way to install a worker
-#      - Install copy of just the Gem + config elsewhere
-#      - Use the app's copy to run workers
+## Configure `backburner`
 
-#TODO: How to run backburner as a daemon
-Set-up `backburner` to run in a daemon mode:
+`backburner` is the Gem used to interact with the `beanstalk` queue.
+It works in two parts:  client libraries that put data on the queue, and background-worker jobs that process the data on
+queue.
 
-- Ruby "God" process supervisor (script provided by upstream)
-- Upstart #TODO: copy scripts into a shared dir
+Simply adding the Gem to your app will configure the client part with useful defaults.
 
+To enable the background-worker part, you need to be able to automatically start the `backburner` worker.
+The `backburner` Gem documentation covers this is detail, but they include a God script.
 
+I've included a set of example Ubuntu Upstart scripts in the `share/upstart` directory, which you will need to update
+with details like "app_name" and "app_dir" and install to your machine's `/etc/init/` dir.
+You may also need to make other adjustments to it according to your needs and/or skill.
 
-## Usage
+Alternatively, you can either start `backburner` in daemon mode with:
 
-TODO: Write usage instructions here
+    $ cd ${app_dir}
+    $ bundle exec backburner -d -r ${app_config}
+
+Or wrapped with some-other daemoniser (such as Niet) with:
+
+    $ niet -t backburner -c ${app_dir} -- bundle exec backburner -r ${app_config}
+
+NB: Replace ${app_dir} with the directory your app is installed to, and ${app_config} with the path to your Squash
+Repeater config.
+
+## Configure Squash Repeater
+
+You need to `require "squashrepeater/ruby"` and then use `SquashRepeater::Ruby.configure` to configure it, e.g:
+
+```ruby
+require "squashrepeater/ruby"
+
+SquashRepeater::Ruby.configure do |c|
+  # The nature of SquashRepeater is that a tiny local queueing system
+  # captures the Squash notification, and retransmits it from a worker.
+  # Therefore, we assume beanstalkd is running locally:
+
+  ###
+  # Backburner defaults:
+  # c.queue_host = "localhost"
+  # c.namespace = "squash-repeater"
+
+  ###
+  # You can set Squash::Ruby config here, or through their configration method. Either way, they must be set:
+  # @param api_host:
+  # c.squash_url = "http://no.where"
+  # @param api_key:
+  # c.squash_key = "12345"
+  # @param environment:
+  c.environment = Rails.env if defined? Rails.env
+
+  ###
+  # This sets the Backburner (queue) logging.  There's no easy way to set Squash to use Logger:
+  c.logger = Rails.logger if defined? Rails.logger
+end
+```
+
+As mentioned above, you can configure a few `Squash::Ruby` settings via this config block, or configure it in the Squash
+way via `Squash::Ruby.configure()`
 
 ## Contributing
+
+ #TODO(willjr): Update
 
 1. Fork it ( https://github.com/[my-github-username]/squashrepeater-ruby/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
