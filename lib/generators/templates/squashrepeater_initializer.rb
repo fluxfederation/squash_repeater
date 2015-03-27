@@ -21,5 +21,5 @@ SquashRepeater::Ruby.configure do |c|
 
   ###
   # This sets the Backburner (queue) logging.  There's no way to set Squash to use Logger:
-  c.logger = Rails.logger
+  c.logger = Rails.logger if defined? Rails.logger
 end
