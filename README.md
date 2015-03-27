@@ -6,7 +6,8 @@ contact is made or the connection times-out.
 
 In many cases, an exception is a failure, and you probably don't want to be nice
 about it, but for user-facing app's, you're degrading the user-experience even
-further.  A quick-response "failure" is still many times better.
+further.  A quick-response "failure" message to the user is still many times better
+than waiting many seconds (or more).
 
 On top of that, almost all exceptions are valuable, in that they have captured a
 failure-mode that you weren't previously aware of.  If the server is down, then the
