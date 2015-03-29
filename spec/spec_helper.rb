@@ -7,4 +7,5 @@ require "pry"
 
 #####
 
+require "squash/ruby"
 require "squashrepeater/ruby"
