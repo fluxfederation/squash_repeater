@@ -30,6 +30,8 @@ module SquashRepeater
         squash_configuration.delete("timeout_protection")
 
         #NB: This relies on forking behaviour!
+        # We do this, because the queue may be shared, therefore the config may have been different from
+        # each client.
         Squash::Ruby.configure(squash_configuration)
         ENV['no_proxy'] = no_proxy_env
 
