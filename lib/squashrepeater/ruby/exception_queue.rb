@@ -2,16 +2,21 @@ require "backburner"
 
 module SquashRepeater
   module Ruby
-    def self.work
-      Backburner.work
-    end
+    class << self
+      def transmit_exceptions
+        Backburner.work
+      end
+      alias :work :transmit_exceptions
 
-    def self.enqueue(*args)
-      Backburner.enqueue(Capture, *args)
+      def capture_exception(*args)
+        Backburner.enqueue(ExceptionQueue, *args)
+      end
+
+      alias :enqueue :capture_exception
     end
 
     #TODO: Choose a better name
-    class Capture
+    class ExceptionQueue
       include Backburner::Queue
       queue "exception"
 

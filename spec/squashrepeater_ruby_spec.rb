@@ -9,12 +9,12 @@ describe SquashRepeater::Ruby do
   end
 
   it do
-    expect(backburner).to receive(:enqueue).with(SquashRepeater::Ruby::Capture, "one", "two", three: "three")
-    SquashRepeater::Ruby.enqueue("one", "two", three: "three")
+    expect(backburner).to receive(:enqueue).with(SquashRepeater::Ruby::ExceptionQueue, "one", "two", three: "three")
+    SquashRepeater::Ruby.capture_exception("one", "two", three: "three")
   end
 end
 
-describe SquashRepeater::Ruby::Capture do
+describe SquashRepeater::Ruby::ExceptionQueue do
   let(:squash_ruby) { class_double("Squash::Ruby").as_stubbed_const(:transfer_nested_constants => true) }
 
   it do
@@ -24,7 +24,7 @@ describe SquashRepeater::Ruby::Capture do
       "url", "headers", "body"
     )
 
-    SquashRepeater::Ruby::Capture.perform(
+    SquashRepeater::Ruby::ExceptionQueue.perform(
       "url", "headers", "body", { config1: "config1", config2: "config2" }
     )
   end
@@ -34,7 +34,7 @@ describe SquashRepeater::Ruby::Capture do
       config1: "config1", config2: "config2")
     expect(squash_ruby).to receive(:http_transmit__original)
 
-    SquashRepeater::Ruby::Capture.perform(
+    SquashRepeater::Ruby::ExceptionQueue.perform(
       "url", "headers", "body",
       { config1: "config1", config2: "config2",
        "timeout_protection" => "should not be here" }

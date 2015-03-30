@@ -12,7 +12,7 @@ module Squash
       # Capture the HTTP data, and store it in the beanstalkd queue for later
       # processing
       def http_transmit(url, headers, body)
-        SquashRepeater::Ruby.enqueue(url, headers, body, @configuration, ENV["no_proxy"])
+        SquashRepeater::Ruby.capture_exception(url, headers, body, @configuration, ENV["no_proxy"])
       end
     end
   end
