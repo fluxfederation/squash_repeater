@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'squashrepeater/ruby/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "squashrepeater-ruby"
+  spec.name          = "squashrepeater_ruby"
   spec.version       = SquashRepeater::Ruby::VERSION
   spec.authors       = ["Will Robertson"]
   spec.email         = ["will.robertson@powershop.co.nz"]
