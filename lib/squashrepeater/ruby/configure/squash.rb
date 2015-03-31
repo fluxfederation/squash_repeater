@@ -1,22 +1,26 @@
-module SquashRepeater::Ruby::Configuration::Squash
+# Wrap Squash::Ruby's slightly nasty configuration method with
+# a config-block class
+class SquashRepeater::Ruby::Configuration::Squash
   def self.configure
-    yield self
+    self.configuration  # Initialise
+    yield configuration if block_given?
   end
-  
-  def method_missing(method_sym, *args, &p)
-    return super  unless respond_to?(method_sym)
 
+  def self.configuration
+    @configuration ||= self.new
+    return @configuration
+  end
+
+  def method_missing(method_sym, *args, &p)
     if method_sym.to_s =~ /^(.*)=$/
       # Setter
-      Squash::Ruby.configure({ $1.to_sym => args[0] })
+      key, val = $1.to_sym, args[0]
+      Squash::Ruby.configure({ key => val })
+
     else
       # Getter
-      Squash::Ruby.configuration($1.to_sym)
+      key = $1.to_sym
+      Squash::Ruby.configuration(key)
     end
-  end
-
-  def respond_to?(method_sym, include_private=false)
-    method_name = method_sym.to_s.sub(/=$/, "")
-    Squash::Ruby.configuration(method_name.to_sym) ? true : super
   end
 end

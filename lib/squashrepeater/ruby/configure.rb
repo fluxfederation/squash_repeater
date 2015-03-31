@@ -7,7 +7,7 @@ module SquashRepeater::Ruby
   end
 
   def self.configure
-    self.configuration ||= Configuration.new
+    self.configuration ||= Configuration.new  # Initialise
     yield configuration if block_given?
   end
 
@@ -28,56 +28,66 @@ module SquashRepeater::Ruby
         # NB: This relies on forking behaviour!
         c.default_worker = Backburner::Workers::Forking
 
-        #TODO: Choose a better failure mode. Notify Munin?
+        #TODO: Choose a better failure mode:
         #c.on_error = lambda { |ex| Airbrake.notify(ex) }
+
         c.logger = Logger.new(STDOUT)
       end
     end
 
+    def squash_url
+      squash.api_host
+    end
+
     def squash_url=(value)
-      @squash_url = value
-      squash api_host: @squash_url
+      squash.api_host = value
+    end
+
+    def squash_key
+      squash.api_key
     end
 
     def squash_key=(value)
-      @squash_key = value
-      squash api_key: @squash_key
+      squash.api_key = value
     end
 
     def squash_environment=(value)
-      @squash_environment = value
-      squash environment: @squash_environment
+      squash.environment = value
+    end
+
+    def squash_environment=(value)
+      squash.environment = value
     end
     alias :environment :squash_environment
     alias :environment= :squash_environment=
 
     def queue_host=(value)
-      backburner.configuration.beanstalk_url = "beanstalk://#{value}"
+      backburner.beanstalk_url = "beanstalk://#{value}"
     end
 
     def queue_host
-      backburner.configuration.beanstalk_url.sub(%r(^beanstalk://), "")
+      backburner.beanstalk_url.sub(%r(^beanstalk://), "")
     end
 
     def queue_host=(value)
-      backburner.configuration.beanstalk_url = "beanstalk://#{value}"
+      backburner.beanstalk_url = "beanstalk://#{value}"
     end
 
     def namespace
-      backburner.configuration.tube_namespace
+      backburner.tube_namespace
     end
 
     def namespace=(value)
-      backburner.configuration.tube_namespace = value
+      backburner.tube_namespace = value
     end
 
     def logger
-      backburner.configuration.logger
+      backburner.logger
     end
 
     def logger=(value)
       # Squash doesn't allow you to use a different logger
-      backburner.configuration.logger = value
+      backburner.logger = value
     end
 
     private
@@ -92,14 +102,16 @@ module SquashRepeater::Ruby
 
     def squash(&p)
       if block_given?
-        SquashRepeater::Ruby::Squash.configure(&p)
+        SquashRepeater::Ruby::Configuration::Squash.configure(&p)
       else
-        SquashRepeater::Ruby::Squash.configure(&p)
+        SquashRepeater::Ruby::Configuration::Squash.configuration
       end
       #Squash::Ruby.configure(*args)
     end
   end
 end
+
+require "squashrepeater/ruby/configure/squash"
 
 # Set the defaults:
 SquashRepeater::Ruby.configure
