@@ -1,9 +1,5 @@
-module SquashRepeater
-  module Ruby
-    # Configuration methods are in `configure.rb`
-    # Exception capture and re-run are in `exception_queue.rb`
-  end
-end
+# Configuration methods are in `configure.rb`
+# Exception capture and re-run are in `exception_queue.rb`
 
 require "squashrepeater/ruby/version"
 require "squashrepeater/ruby/configure"

@@ -9,8 +9,8 @@ describe SquashRepeater::Ruby do
   end
 
   it do
-    expect(backburner).to receive(:enqueue).with(SquashRepeater::Ruby::ExceptionQueue, "one", "two", three: "three")
-    SquashRepeater::Ruby.capture_exception("one", "two", three: "three")
+    expect(backburner).to receive(:enqueue).with(SquashRepeater::Ruby::ExceptionQueue, "one", "two", :three, {four: "three"}, :five)
+    SquashRepeater::Ruby.capture_exception("one", "two", :three, {four: "three"}, :five)
   end
 end
 
