@@ -51,8 +51,8 @@ module SquashRepeater::Ruby
       squash.api_key = value
     end
 
-    def squash_environment=(value)
-      squash.environment = value
+    def squash_environment
+      squash.environment
     end
 
     def squash_environment=(value)
@@ -116,7 +116,6 @@ module SquashRepeater::Ruby
       else
         SquashRepeater::Ruby::Configuration::Squash.configuration
       end
-      #Squash::Ruby.configure(*args)
     end
   end
 end
