@@ -7,17 +7,19 @@ SquashRepeater::Ruby.configure do |c|
 
   ###
   # Backburner defaults:
-  # c.queue_host = "localhost"
-  # c.namespace = "squash-repeater"
+  #c.queue_host = "localhost"
+  #c.namespace = "squash-repeater"
 
   ###
   # You can set Squash::Ruby config here, or through their configration method. Either way, they must be set:
   # @param api_host:
-  # c.squash_url = "http://no.where"
+  #c.squash_url = "http://no.where"
   # @param api_key:
-  # c.squash_key = "12345"
+  #c.squash_key = "12345"
   # @param environment:
   c.environment = Rails.env if defined? Rails.env
+  # @param disabled:
+  #c.disabled = !c.squash_key
 
   ###
   # This sets the Backburner (queue) logging.  There's no easy way to set Squash to use Logger:
