@@ -61,6 +61,16 @@ module SquashRepeater::Ruby
     alias :environment :squash_environment
     alias :environment= :squash_environment=
 
+    def squash_disabled
+      squash.disabled
+    end
+
+    def squash_disabled=(value)
+      squash.disabled = value
+    end
+    alias :disabled :squash_disabled
+    alias :disabled= :squash_disabled=
+
     def queue_host=(value)
       backburner.beanstalk_url = "beanstalk://#{value}"
     end
