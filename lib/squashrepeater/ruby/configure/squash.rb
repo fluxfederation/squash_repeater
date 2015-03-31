@@ -12,15 +12,14 @@ class SquashRepeater::Ruby::Configuration::Squash
   end
 
   def method_missing(method_sym, *args, &p)
-    fail "Can't extract a meaningful name from the provided method_sym" unless method_sym.to_s =~ /^(.+)(=|)$/
+    fail "Can't extract a meaningful name from the provided method_sym" unless method_sym.to_s =~ /^(.+?)=?$/
     key, val = $1.to_sym, args[0]
+
     if method_sym.to_s =~ /=$/
       # Setter
       Squash::Ruby.configure({ key => val })
-
-    else
-      # Getter
-      Squash::Ruby.configuration(key)
     end
+    # Getter
+    Squash::Ruby.configuration(key)
   end
 end
