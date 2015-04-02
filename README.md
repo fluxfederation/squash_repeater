@@ -43,9 +43,8 @@ Or install it yourself as:
 
 If you're using Rails, you can install an initialiser template with:
 
- #TODO(willjr): Is this correct?
 
-    $ bundle exec rails generate intitializer squashrepeater
+    $ bundle exec rails generate squashrepeater:install
 
 ## Install `beanstalkd`
 
