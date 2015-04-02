@@ -12,8 +12,10 @@ module SquashRepeater::Ruby
   end
 
   class Configuration
+    attr_reader :logger
+
     def initialize
-      self.logger = Logger.new(STDOUT)
+      self.logger = Logger.new(STDERR)
 
       backburner do |c|
         # The nature of SquashRepeater is that a tiny local queueing system
@@ -46,13 +48,16 @@ module SquashRepeater::Ruby
       end
     end
 
+    # Return an array of all available loggers
     def loggers
-      [backburner.logger]  #FUTURE: Can we somehow get a Squash logger for this?
+      [logger, backburner.logger]  #FUTURE: Can we somehow get a Squash logger for this?
     end
 
     def logger=(value)
-      # Squash doesn't allow you to use a different logger
-      backburner.logger = value  #FUTURE: Can we somehow set a Squash logger for this?
+      #FUTURE: Can we somehow also set a Squash logger for this?
+      #NB: Squash doesn't allow you to use a different logger
+      @logger = value
+      backburner.logger = @logger
     end
   end
 end
