@@ -22,6 +22,7 @@ SquashRepeater::Ruby.configure do |c|
   #c.squash.disabled = !c.squash_key
 
   ###
-  # This sets the Backburner logging.  There's no easy way to set Squash to use Logger:
+  # This sets the SquashRepeater and Backburner logging.
+  # There's no easy way to set Squash to use Logger:
   c.logger = Rails.logger if defined? Rails.logger
 end
