@@ -57,6 +57,7 @@ module SquashRepeater::Ruby
       #FUTURE: Can we somehow also set a Squash logger for this?
       #NB: Squash doesn't allow you to use a different logger
       @logger = value
+      #NB: Backburner can be quite chatty.  You may prefer to change the default log-level a bit higher because of this.
       backburner.logger = @logger
     end
   end

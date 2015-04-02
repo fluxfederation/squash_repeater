@@ -10,6 +10,9 @@ module SquashRepeater::Ruby
     # Capture the HTTP data, and store it in the beanstalkd queue for later
     def capture_exception(url, headers, body, squash_configuration, no_proxy_env)
       Backburner.enqueue(ExceptionQueue, url, headers, body, squash_configuration, no_proxy_env)
+    rescue Beaneater::NotConnected, Beaneater::InvalidTubeName, Beaneater::JobNotReserved, Beaneater::UnexpectedResponse => e
+      configuration.logger.error e
+      raise
     end
     alias :enqueue :capture_exception
   end
