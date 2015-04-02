@@ -1,5 +1,16 @@
 # Wrap Squash::Ruby's slightly nasty configuration method with
 # a config-block class
+#
+# Squash accepts configuration via a key-value hash passed to the #configure class method
+# and provides reading that configuration by passing a key the #configuration class method and returning the
+# value for that key/attribute.
+# This class attempts to emulate a tradtional Configure-block class (a la Struct / OpenStruct) but calls-into
+# Squash's configuration methods;  this helps make the rest of the SquashRepeater Configure class simpler.
+# This class is probably more-like OpenStruct in-use, as it doesn't do any checking of "allowed" attributes, which
+# is more-similar to how Squash treats configuration attr's.
+# I didn't bother implementing all the methods you might expect, as this should really only be consumed by
+# SquashRepeater users, at a fairly simplistic level.
+
 class SquashRepeater::Ruby::Configuration::Squash
   def self.configure
     self.configuration  # Initialise
