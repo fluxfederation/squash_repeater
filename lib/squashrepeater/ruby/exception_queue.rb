@@ -16,7 +16,9 @@ module SquashRepeater::Ruby
     alias :work :transmit_exceptions
 
     # Capture the HTTP data, and store it in the beanstalkd queue for later
-    def capture_exception(url, headers, body, squash_configuration, no_proxy_env)
+    def capture_exception(url: nil, headers: nil, body: nil, squash_configuration: nil, no_proxy_env: nil)
+      #FUTURE: Required keyword args, for Ruby 2.1+
+      #def capture_exception(url:, headers:, body:, squash_configuration:, no_proxy_env: nil)
       fail "Missing required keyword arg" unless url && headers && body && squash_configuration
 
       # If things fail, it's useful to know how long it caused the exception-capture to block the
