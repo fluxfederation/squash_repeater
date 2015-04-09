@@ -13,9 +13,12 @@ module SquashRepeater::Ruby
 
   class Configuration
     attr_reader :logger
+    attr_accessor :capture_timeout
 
     def initialize
+      #NB: You definitely want to think about changing this to something more "substantial"; beanstalkd goes down, you'll lose data.
       self.logger = Logger.new(STDERR)
+      self.capture_timeout = 2  # seconds
 
       backburner do |c|
         # The nature of SquashRepeater is that a tiny local queueing system
@@ -24,6 +27,9 @@ module SquashRepeater::Ruby
         c.beanstalk_url = "beanstalk://localhost"
         #c.beanstalk_url = "beanstalk://127.0.0.1"
         c.tube_namespace   = "squash-repeater"
+
+        c.max_job_retries = 10 # retry jobs 10 times
+        c.retry_delay = 30 # wait 30 seconds in between retries
 
         # NB: This relies on forking behaviour!
         c.default_worker = Backburner::Workers::Forking
