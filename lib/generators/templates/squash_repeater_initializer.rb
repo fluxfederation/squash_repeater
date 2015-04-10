@@ -1,4 +1,4 @@
-require "squashrepeater/ruby"
+require "squash_repeater/ruby"
 
 SquashRepeater::Ruby.configure do |c|
   # The nature of SquashRepeater is that a tiny local queueing system

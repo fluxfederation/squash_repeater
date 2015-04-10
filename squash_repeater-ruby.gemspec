@@ -1,10 +1,10 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'squashrepeater/ruby/version'
+require 'squash_repeater/ruby/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "squashrepeater_ruby"
+  spec.name          = "squash_repeater_ruby"
   spec.version       = SquashRepeater::Ruby::VERSION
   spec.authors       = ["Will Robertson"]
   spec.email         = ["will.robertson@powershop.co.nz"]
@@ -27,4 +27,5 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "squash_ruby"
   spec.add_runtime_dependency "backburner"
+  spec.add_runtime_dependency "thor"
 end

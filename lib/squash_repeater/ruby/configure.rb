@@ -70,7 +70,7 @@ module SquashRepeater::Ruby
 end
 
 # This class relies on the class hierarchy having been created (above):
-require "squashrepeater/ruby/configure/squash"
+require "squash_repeater/ruby/configure/squash"
 
 # Set the defaults:
 SquashRepeater::Ruby.configure

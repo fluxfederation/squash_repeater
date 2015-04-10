@@ -8,4 +8,4 @@ require "pry"
 #####
 
 require "squash/ruby"
-require "squashrepeater/ruby"
+require "squash_repeater/ruby"

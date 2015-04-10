@@ -19,7 +19,7 @@ class SquashRepeater::Ruby::Configuration::Squash
 
   def self.configuration
     @configuration ||= self.new
-    return @configuration
+    #return @configuration
   end
 
   def method_missing(method_sym, val=nil)

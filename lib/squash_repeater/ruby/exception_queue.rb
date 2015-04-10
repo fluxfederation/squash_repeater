@@ -5,7 +5,8 @@ require "backburner"
 module SquashRepeater::Ruby
   class CaptureTimeoutError < SquashRepeater::Error
     def to_s
-      "Capturing the exception timed-out" + (super && !super.empty? ? " (#{super})" : "")
+      original_message = super
+      "Capturing the exception timed-out#{" (#{original_message})" if original_message && !original_message.empty?}"
     end
   end
 
@@ -32,7 +33,7 @@ module SquashRepeater::Ruby
         end
 
       rescue CaptureTimeoutError, Beaneater::NotConnected, Beaneater::InvalidTubeName, Beaneater::JobNotReserved, Beaneater::UnexpectedResponse => e
-        self.failsafe_handler(
+        failsafe_handler(
           e, message: "whilst trying to connect to Beanstalk", time_start: start,
           args: {
             url: url,
@@ -49,6 +50,8 @@ module SquashRepeater::Ruby
 
     def failsafe_handler(exception, message: nil, time_start: nil, args: {})
       configuration.logger.error "Failed: #{exception}" + (message && !message.empty? ? ", #{message}." : ".")
+      configuration.logger.error "      : #{exception.inspect}"
+
       configuration.logger.error "  (Took #{Time.now - time_start}s to fail)" if time_start
       configuration.logger.error ["*****","  original_args = #{args.inspect}", "*****"].join("\n")
     end
@@ -65,6 +68,10 @@ module SquashRepeater::Ruby
       #    Normally it logs to a special log file, whereas what we really want
       #    is for the job(s) to go back on the queue to be retried.
 
+      # If things fail, it's useful to know how long it caused the exception-capture to block the
+      # calling process:
+      start = Time.now
+
       #NB: :timeout_protection is a Proc object:
       squash_configuration = squash_configuration.dup
 
@@ -78,8 +85,14 @@ module SquashRepeater::Ruby
       Squash::Ruby.configure(squash_configuration)
       ENV['no_proxy'] = no_proxy_env
 
-      # Transmit it to the Squash server:
-      Squash::Ruby.http_transmit__original(url, headers, body)
+      begin
+        # Transmit it to the Squash server:
+        Squash::Ruby.http_transmit__original(url, headers, body)
+
+      rescue SocketError => e
+        SquashRepeater::Ruby.failsafe_handler(e, message: "whilst trying to connect to Squash", time_start: start)
+        raise
+      end
     end
   end
 end

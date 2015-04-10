@@ -30,7 +30,7 @@ It doesn't solve things like
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'squashrepeater-ruby'
+gem 'squash_repeater-ruby'
 ```
 
 And then execute:
@@ -39,12 +39,12 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install squashrepeater-ruby
+    $ gem install squash_repeater-ruby
 
 If you're using Rails, you can install an initialiser template with:
 
 
-    $ bundle exec rails generate squashrepeater:install
+    $ bundle exec rails generate squash_repeater:install
 
 ## Install `beanstalkd`
 
@@ -81,10 +81,10 @@ Repeater config.
 
 ## Configure Squash Repeater
 
-You need to `require "squashrepeater/ruby"` and then use `SquashRepeater::Ruby.configure` to configure it, e.g:
+You need to `require "squash_repeater/ruby"` and then use `SquashRepeater::Ruby.configure` to configure it, e.g:
 
 ```ruby
-require "squashrepeater/ruby"
+require "squash_repeater/ruby"
 
 SquashRepeater::Ruby.configure do |c|
   # The nature of SquashRepeater is that a tiny local queueing system
@@ -118,7 +118,7 @@ way via `Squash::Ruby.configure()`
 
  #TODO(willjr): Update
 
-1. Fork it ( https://github.com/[my-github-username]/squashrepeater-ruby/fork )
+1. Fork it ( https://github.com/[my-github-username]/squash_repeater-ruby/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
