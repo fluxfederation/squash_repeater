@@ -10,7 +10,7 @@ describe SquashRepeater::Ruby do
 
   it do
     expect(backburner).to receive(:enqueue).with(SquashRepeater::Ruby::ExceptionQueue, "one", "two", :three, {four: "three"}, :five)
-    SquashRepeater::Ruby.capture_exception("one", "two", :three, {four: "three"}, :five)
+    SquashRepeater::Ruby.capture_exception(url: "one", headers: "two", body: :three, squash_configuration: {four: "three"}, no_proxy_env: :five)
   end
 end
 

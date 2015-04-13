@@ -20,7 +20,7 @@ describe Squash::Ruby do
     end
 
     it do
-      expect(squash_repeater).to receive(:capture_exception).with("url", "headers", "body", nil, "TEST no_proxy")
+      expect(squash_repeater).to receive(:capture_exception).with(url: "url", headers: "headers", body: "body", squash_configuration: nil, no_proxy_env: "TEST no_proxy")
       Squash::Ruby.class_eval { http_transmit("url", "headers", "body") }
     end
   end
