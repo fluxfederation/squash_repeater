@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe Squash::Ruby do
-  let(:squash_repeater) { class_double("SquashRepeater::Ruby").as_stubbed_const(:transfer_nested_constants => true) }
+  let(:squash_repeater) { class_double("SquashRepeater").as_stubbed_const(:transfer_nested_constants => true) }
 
   context "with ENV['no_proxy'] unset" do
     it do

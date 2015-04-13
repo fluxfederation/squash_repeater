@@ -11,7 +11,7 @@
 # I didn't bother implementing all the methods you might expect, as this should really only be consumed by
 # SquashRepeater users, at a fairly simplistic level.
 
-class SquashRepeater::Ruby::Configuration::Squash
+class SquashRepeater::Configuration::Squash
   def self.configure
     self.configuration  # Initialise
     yield configuration if block_given?

@@ -1,7 +1,7 @@
 require "spec_helper"
 
-describe SquashRepeater::Ruby::Configuration::Squash do
-  let(:config) { SquashRepeater::Ruby::Configuration::Squash.configuration }
+describe SquashRepeater::Configuration::Squash do
+  let(:config) { SquashRepeater::Configuration::Squash.configuration }
   let(:squash_ruby) { class_double("Squash::Ruby").as_stubbed_const(:transfer_nested_constants => true) }
 
   it do

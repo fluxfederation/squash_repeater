@@ -1,20 +1,20 @@
 require "spec_helper"
 
-describe SquashRepeater::Ruby do
+describe SquashRepeater do
   let(:backburner) { class_double("Backburner").as_stubbed_const(:transfer_nested_constants => true) }
 
   it do
     expect(backburner).to receive(:work)
-    SquashRepeater::Ruby.work
+    SquashRepeater.work
   end
 
   it do
-    expect(backburner).to receive(:enqueue).with(SquashRepeater::Ruby::ExceptionQueue, "one", "two", :three, {four: "three"}, :five)
-    SquashRepeater::Ruby.capture_exception(url: "one", headers: "two", body: :three, squash_configuration: {four: "three"}, no_proxy_env: :five)
+    expect(backburner).to receive(:enqueue).with(SquashRepeater::ExceptionQueue, "one", "two", :three, {four: "three"}, :five)
+    SquashRepeater.capture_exception(url: "one", headers: "two", body: :three, squash_configuration: {four: "three"}, no_proxy_env: :five)
   end
 end
 
-describe SquashRepeater::Ruby::ExceptionQueue do
+describe SquashRepeater::ExceptionQueue do
   let(:squash_ruby) { class_double("Squash::Ruby").as_stubbed_const(:transfer_nested_constants => true) }
 
   it do
@@ -24,7 +24,7 @@ describe SquashRepeater::Ruby::ExceptionQueue do
       "url", "headers", "body"
     )
 
-    SquashRepeater::Ruby::ExceptionQueue.perform(
+    SquashRepeater::ExceptionQueue.perform(
       "url", "headers", "body", { config1: "config1", config2: "config2" }
     )
   end
@@ -34,7 +34,7 @@ describe SquashRepeater::Ruby::ExceptionQueue do
       config1: "config1", config2: "config2")
     expect(squash_ruby).to receive(:http_transmit__original)
 
-    SquashRepeater::Ruby::ExceptionQueue.perform(
+    SquashRepeater::ExceptionQueue.perform(
       "url", "headers", "body",
       { config1: "config1", config2: "config2",
        "timeout_protection" => "should not be here" }

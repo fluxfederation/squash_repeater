@@ -1,6 +1,6 @@
-require "squash_repeater/ruby"
+require "squash_repeater"
 
-SquashRepeater::Ruby.configure do |c|
+SquashRepeater.configure do |c|
   # The nature of SquashRepeater is that a tiny local queueing system
   # captures the Squash notification, and retransmits it from a worker.
   # Therefore, we assume beanstalkd is running locally:

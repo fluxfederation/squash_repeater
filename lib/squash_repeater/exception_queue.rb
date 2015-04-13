@@ -2,7 +2,7 @@ require "time"
 require "timeout"
 require "backburner"
 
-module SquashRepeater::Ruby
+module SquashRepeater
   class CaptureTimeoutError < SquashRepeater::Error
     def to_s
       original_message = super
@@ -90,7 +90,7 @@ module SquashRepeater::Ruby
         Squash::Ruby.http_transmit__original(url, headers, body)
 
       rescue SocketError => e
-        SquashRepeater::Ruby.failsafe_handler(e, message: "whilst trying to connect to Squash", time_start: start)
+        SquashRepeater.failsafe_handler(e, message: "whilst trying to connect to Squash", time_start: start)
         raise
       end
     end

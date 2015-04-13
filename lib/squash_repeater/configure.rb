@@ -1,7 +1,7 @@
 require "backburner"
 require "squash/ruby"
 
-module SquashRepeater::Ruby
+module SquashRepeater
   class << self
     attr_accessor :configuration
   end
@@ -48,9 +48,9 @@ module SquashRepeater::Ruby
 
     def squash(&p)
       if block_given?
-        SquashRepeater::Ruby::Configuration::Squash.configure(&p)
+        SquashRepeater::Configuration::Squash.configure(&p)
       else
-        SquashRepeater::Ruby::Configuration::Squash.configuration
+        SquashRepeater::Configuration::Squash.configuration
       end
     end
 
@@ -70,7 +70,7 @@ module SquashRepeater::Ruby
 end
 
 # This class relies on the class hierarchy having been created (above):
-require "squash_repeater/ruby/configure/squash"
+require "squash_repeater/configure/squash"
 
 # Set the defaults:
-SquashRepeater::Ruby.configure
+SquashRepeater.configure

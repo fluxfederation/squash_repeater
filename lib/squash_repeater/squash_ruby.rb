@@ -13,7 +13,7 @@ module Squash::Ruby
 
     # processing
     def http_transmit(url, headers, body)
-      SquashRepeater::Ruby.capture_exception(url: url, headers: headers, body: body, squash_configuration: @configuration, no_proxy_env: ENV["no_proxy"])
+      SquashRepeater.capture_exception(url: url, headers: headers, body: body, squash_configuration: @configuration, no_proxy_env: ENV["no_proxy"])
     end
   end
 end
