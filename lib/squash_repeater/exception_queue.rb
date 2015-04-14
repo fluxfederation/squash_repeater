@@ -3,12 +3,20 @@ require "timeout"
 require "backburner"
 
 module SquashRepeater
+  WORKER_ERRORS = [
+    Beaneater::NotConnected,
+    Beaneater::InvalidTubeName,
+    Beaneater::JobNotReserved,
+    Beaneater::UnexpectedResponse
+  ]
+
   class CaptureTimeoutError < SquashRepeater::Error
     def to_s
       original_message = super
       "Capturing the exception timed-out#{" (#{original_message})" if original_message && !original_message.empty?}"
     end
   end
+  WORKER_ERRORS << CaptureTimeoutError
 
   class << self
     def transmit_exceptions
@@ -32,7 +40,7 @@ module SquashRepeater
           Backburner.enqueue(ExceptionQueue, url, headers, body, squash_configuration, no_proxy_env)
         end
 
-      rescue CaptureTimeoutError, Beaneater::NotConnected, Beaneater::InvalidTubeName, Beaneater::JobNotReserved, Beaneater::UnexpectedResponse => e
+      rescue *WORKER_ERRORS => e
         failsafe_handler(
           e, message: "whilst trying to connect to Beanstalk", time_start: start,
           args: {
