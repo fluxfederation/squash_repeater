@@ -9,6 +9,9 @@ SquashRepeater.configure do |c|
   # Backburner defaults:
   #c.backburner.beanstalk_url = "beanstalk://localhost"
   #c.backburner.tube_namespace = "squash-repeater"
+  #c.backburner.max_job_retries = 10   # retry jobs 10 times
+  #c.backburner.retry_delay = 30   # wait 30 seconds in between retries
+
 
   ###
   # You can set Squash::Ruby config here, or through their configration method. Either way, they must be set:
