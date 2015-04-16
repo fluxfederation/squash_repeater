@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'bundler/setup'
+require 'pry'
+
+require 'squash_repeater'
+require 'squash_repeater/console'
+
+include SquashRepeater::Console
+
+binding.pry
+
+$STDERR.puts "DONE"
