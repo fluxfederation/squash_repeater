@@ -1,0 +1,99 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'bundler/setup'
+require 'thor'
+require 'beaneater'
+
+require 'squash_repeater'
+
+class SquashRepeater::CLI < Thor
+  module Helpers
+    module_function
+
+    def update_from_class_options
+      o = SquashRepeater::CLI.method_options
+      p o
+      SquashRepeater.configure do |c|
+        c.backburner.beanstalk_url = o[:url] if o[:url]
+        c.backburner.tube_namespace = o[:tube] if o[:tube]
+      end
+
+      p SquashRepeater.configuration.backburner.beanstalk_url
+    end
+
+    def connection  #(options={})
+      update_from_class_options
+      Backburner::Worker.connection
+    end
+
+    def queue_name
+      update_from_class_options
+      SquashRepeater::ExceptionQueue::queue
+    end
+
+    def tube_namespace
+      update_from_class_options
+      SquashRepeater.configuration.backburner.tube_namespace
+    end
+
+    def fq_queue_name
+      "#{tube_namespace}.#{queue_name}"
+    end
+
+    def default_queue
+      connection.tubes[fq_queue_name]
+    end
+
+    def allowed_states
+      ['ready', 'reserved', 'urgent', 'delayed', 'buried']
+    end
+  end
+
+  ##########
+
+  class_option :url, :type => :string
+  class_option :tube, :type => :string
+
+  desc "can_connect", "See if can connect to Beanstalkd"
+  def can_connect
+    p options
+    Helpers.connection
+    $stderr.puts "OK"
+
+  rescue Beaneater::NotConnected => e
+    abort "Can't connect to Beanstalkd: #{e}"
+  end
+
+  desc "queue_name", "The default SquashRepeater queue"
+  def queue_name
+    puts Helpers.fq_queue_name
+  end
+
+  desc "tube_stats", "Stats for Tube, and Beanstalkd"
+  def tube_stats
+    puts Helpers.default_queue.stats
+  end
+
+  desc "munin_config", "Print out the config for a graph, in Munin format"
+  def munin_config
+    q = Helpers.fq_queue_name
+
+    puts "multigraph job_count_#{q}"
+    puts "graph_title Beanstalk Jobs (#{q})"
+    puts "graph_order #{Helpers.allowed_states.join(" ")}"
+    puts "graph_vlabel count"
+    puts Helpers.allowed_states.map {|s|  "#{s}.label #{s}" }.join("\n")
+    puts
+  end
+
+  desc "munin_state", "Print out the state for each type in a queue, in Munin format"
+  def munin_state
+    q = Helpers.fq_queue_name
+
+    puts "multigraph job_count_#{q}"
+    puts Helpers.allowed_states.map {|s| "#{s}.value #{Helpers.default_queue.stats["current_jobs_#{s}"]}" }.join("\n")
+  end
+end
+
+SquashRepeater::CLI.start
