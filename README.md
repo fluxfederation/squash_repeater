@@ -30,7 +30,7 @@ It doesn't solve things like
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'squash_repeater-ruby'
+gem 'squash_repeater', github: 'powershop/squash_repeater'
 ```
 
 And then execute:
@@ -39,10 +39,9 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install squash_repeater-ruby
+    $ gem install squash_repeater
 
 If you're using Rails, you can install an initialiser template with:
-
 
     $ bundle exec rails generate squash_repeater:install
 
@@ -93,20 +92,26 @@ SquashRepeater.configure do |c|
 
   ###
   # Backburner defaults:
-  # c.queue_host = "localhost"
-  # c.namespace = "squash-repeater"
+  #c.backburner.beanstalk_url = "beanstalk://localhost"
+  #c.backburner.tube_namespace = "squash-repeater"
+  #c.backburner.max_job_retries = 10   # retry jobs 10 times
+  #c.backburner.retry_delay = 30   # wait 30 seconds in between retries
+
 
   ###
   # You can set Squash::Ruby config here, or through their configration method. Either way, they must be set:
   # @param api_host:
-  # c.squash_url = "http://no.where"
+  #c.squash.api_host = "http://no.where"
   # @param api_key:
-  # c.squash_key = "12345"
+  #c.squash.api_key = "12345"
   # @param environment:
-  c.environment = Rails.env if defined? Rails.env
+  c.squash.environment = Rails.env if defined? Rails.env
+  # @param disabled:
+  #c.squash.disabled = !c.squash_key
 
   ###
-  # This sets the Backburner (queue) logging.  There's no easy way to set Squash to use Logger:
+  # This sets the SquashRepeater and Backburner logging.
+  # There's no easy way to set Squash to use Logger:
   c.logger = Rails.logger if defined? Rails.logger
 end
 ```
@@ -116,9 +121,7 @@ way via `Squash::Ruby.configure()`
 
 ## Contributing
 
- #TODO(willjr): Update
-
-1. Fork it ( https://github.com/[my-github-username]/squash_repeater-ruby/fork )
+1. Fork it ( https://github.com/powershop/squash_repeater/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
