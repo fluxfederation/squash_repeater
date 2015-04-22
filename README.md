@@ -30,7 +30,7 @@ It doesn't solve things like
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'squash_repeater', github: 'powershop/squash_repeater'
+gem 'squash_repeater'
 ```
 
 And then execute:
