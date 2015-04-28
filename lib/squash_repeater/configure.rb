@@ -32,7 +32,8 @@ module SquashRepeater
         c.retry_delay = 30 # wait 30 seconds in between retries
 
         # NB: This relies on forking behaviour!
-        c.default_worker = Backburner::Workers::Forking
+        # NB: Both ::Simple and ::Forking seem to have a bug in them (https://github.com/nesquena/backburner/issues/93)
+        c.default_worker = Backburner::Workers::ThreadsOnFork
 
         #c.on_error = lambda { |ex| Airbrake.notify(ex) }  #FUTURE: Choose a better failure mode:
       end
