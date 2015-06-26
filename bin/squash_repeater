@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+require "thor"
+require "squash_repeater"
+
+class SquashRepeater::CLI < Thor
+  # contents of the Thor class
+  desc "transmitter", "Start a worker that sends all queued captured exceptions to the Squash service"
+  option :beanstalk_host, :type => :string
+  option :beanstalk_port, :type => :numeric
+  option :beanstalk_tube, :type => :string
+  def transmitter
+    SquashRepeater.configure do |c|
+      beanstalk_url = nil
+
+      beanstalk_url = "beanstalk://#{options[:beanstalk_host]}" if options[:beanstalk_host]
+      beanstalk_url += ":#{options[:beanstalk_port]}" if beanstalk_url && options[:beanstalk_port]
+      c.backburner.beanstalk_url = beanstalk_url if beanstalk_url
+
+      c.backburner.tube_namespace = options[:beanstalk_tube] if options[:beanstalk_tube]
+    end
+
+    SquashRepeater.configuration.logger.info "Starting SquashRepeater worker"
+
+    SquashRepeater.transmit_exceptions
+  end
+end
+
+SquashRepeater::CLI.start(ARGV)
