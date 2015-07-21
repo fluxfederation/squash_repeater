@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    squash_repeater (0.1.9.1)
+    squash_repeater (0.1.10)
       backburner (~> 1.0)
       squash_ruby (~> 2.0)
       thor (~> 0.19)
