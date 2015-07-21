@@ -18,6 +18,10 @@ class SquashRepeater::CLI < Thor
       c.backburner.beanstalk_url = beanstalk_url if beanstalk_url
 
       c.backburner.tube_namespace = options[:beanstalk_tube] if options[:beanstalk_tube]
+
+      logger = Logger.new(STDERR)
+      logger.level = Logger::ERROR
+      c.logger = logger
     end
 
     SquashRepeater.configuration.logger.info "Starting SquashRepeater worker"
