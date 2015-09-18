@@ -15,5 +15,9 @@ module Squash::Ruby
     def http_transmit(url, headers, body)
       SquashRepeater.capture_exception(url: url, headers: headers, body: body, squash_configuration: @configuration, no_proxy_env: ENV["no_proxy"])
     end
+
+    def instance_variable_hash(object)
+      nil
+    end
   end
 end
