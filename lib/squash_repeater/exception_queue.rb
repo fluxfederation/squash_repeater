@@ -97,8 +97,8 @@ module SquashRepeater
         # Transmit it to the Squash server:
         Squash::Ruby.http_transmit__original(url, headers, body)
 
-      rescue SocketError => e
-        SquashRepeater.failsafe_handler(e, message: "whilst trying to connect to Squash", time_start: start)
+      rescue Timeout::Error, SocketError => e
+        SquashRepeater.failsafe_handler(e, message: "whilst trying to connect/transmit to Squash", time_start: start)
         raise
       end
     end
