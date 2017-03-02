@@ -26,7 +26,7 @@ module SquashRepeater
         # Therefore, we assume beanstalkd is running locally:
         c.beanstalk_url = "beanstalk://localhost"
         #c.beanstalk_url = "beanstalk://127.0.0.1"
-        # c.tube_namespace   = "squash-repeater"
+        c.tube_namespace   = "exception-notifier"
 
         c.max_job_retries = 10 # retry jobs 10 times
         c.retry_delay = 30 # wait 30 seconds in between retries
